@@ -94,6 +94,18 @@ La clave secreta está en la app: **Configuración → Básica → Clave secreta
 **Apunta:** el token de página. Trátalo como una contraseña — quien lo tenga puede publicar
 en tu cuenta.
 
+## Los tres secretos de GitHub Actions
+
+En el repo → **Settings → Secrets and variables → Actions → New repository secret**:
+
+| Secreto | Valor |
+|---|---|
+| `IG_USER_ID` | el `instagram_business_account.id` del paso 4 |
+| `IG_ACCESS_TOKEN` | el token de página del paso 5 |
+| `IMAGE_BASE_URL` | `https://raw.githubusercontent.com/S34mu5/strife-serie-diaria-ig/main` |
+
+Pega el token tú directamente ahí. Queda cifrado y no aparece en los logs.
+
 ## Comprobar antes de publicar de verdad
 
 Ensayo, sin tocar Instagram:
@@ -111,7 +123,11 @@ IG_USER_ID=... IG_ACCESS_TOKEN=... IMAGE_BASE_URL=... python3 publicar.py --dia 
 ## Notas de la API que conviene saber
 
 - **Las imágenes necesitan URL pública HTTPS.** La Graph API no acepta subida de archivos:
-  descarga la imagen desde una URL. De ahí que los PNG vivan en el repositorio.
+  descarga la imagen desde una URL. De ahí que las imágenes vivan en el repositorio.
+- **Instagram solo publica JPEG.** Los originales son PNG, así que `jpg/` contiene la
+  conversión (calidad 92, mismas dimensiones) y es lo que se publica. Si añades o cambias
+  una imagen, convierte el PNG con:
+  `sips -s format jpeg -s formatOptions 92 dia-XX.png --out jpg/dia-XX.jpg`
 - **La Graph API de Instagram no programa posts.** El `scheduled_publish_time` existe para
   páginas de Facebook, no para Instagram. El calendario lo pone el cron de Actions.
 - **Límite de 50 publicaciones cada 24 horas.** Nosotros hacemos 1 al día.
