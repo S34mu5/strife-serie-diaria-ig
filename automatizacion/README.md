@@ -23,6 +23,7 @@ en `generar_calendario.py` y los `cron` del workflow.
 |---|---|
 | `generar_calendario.py` | Lee `../pies-de-foto.txt` y genera `calendario.json`: 29 posts + 2 carruseles. Valida archivos, límites de caption y que los cierres caigan en domingo. |
 | `medir_audiencia.py` | Horas de conexión reales de tus seguidores + alcance de cada post publicado, vía Insights. |
+| `refrescar_token.py` | Renueva el token de 60 días por otros 60. No hace falta durante esta serie. |
 | `calendario.json` | El calendario ya generado: día, fecha, archivo, pie, tags y caption final. |
 | `publicar.py` | Publica el post que toca hoy vía Instagram Graph API. |
 | `registro.json` | Se crea al primer post. Guarda qué días ya se publicaron para no duplicar nunca. |
@@ -30,6 +31,24 @@ en `generar_calendario.py` y los `cron` del workflow.
 
 Si cambias un pie de foto, edita `../pies-de-foto.txt` y vuelve a lanzar
 `python3 generar_calendario.py`.
+
+## Vía usada: «Instagram API con Instagram Login»
+
+Meta tiene dos vías para publicar. Usamos la de **Instagram Login**, que según su
+documentación «no requiere que una página de Facebook esté vinculada a la cuenta
+profesional de Instagram». Es bastante más corta que la vía de Facebook Login:
+el token se genera con un botón en el propio panel de la app, sin Graph API
+Explorer ni canjes de token.
+
+| | Instagram Login (la que usamos) | Facebook Login (la antigua) |
+|---|---|---|
+| Página de Facebook | **no hace falta** | obligatoria |
+| Host de la API | `graph.instagram.com` | `graph.facebook.com` |
+| Permisos | `instagram_business_basic`, `instagram_business_content_publish` | `instagram_basic`, `instagram_content_publish`, `pages_read_engagement` |
+| Token | 60 días, botón «Generate token» en el panel | canje `fb_exchange_token` → token de página |
+
+Los permisos antiguos (`instagram_basic`, `instagram_content_publish`) quedaron
+obsoletos el 27 de enero de 2025 para esta vía.
 
 ## Lo que tienes que preparar en Meta (una sola vez)
 
@@ -151,9 +170,14 @@ python3 publicar.py --id guia-alumno --dry-run
   `sips -s format jpeg -s formatOptions 92 dia-XX.png --out jpg/dia-XX.jpg`
 - **La Graph API de Instagram no programa posts.** El `scheduled_publish_time` existe para
   páginas de Facebook, no para Instagram. El calendario lo pone el cron de Actions.
-- **Límite de 50 publicaciones cada 24 horas.** Nosotros hacemos 1 al día.
+- **Límite de 100 publicaciones cada 24 horas.** Nosotros hacemos 1 al día.
 - **Carruseles:** cada foto se sube como contenedor hijo (`is_carousel_item`),
   luego un contenedor `CAROUSEL` con los hijos y el pie, y se publica. Máximo
   10 fotos; las nuestras son 6 y 8. Un carrusel cuenta como UNA publicación.
+  **Ojo:** Instagram recorta todas las fotos del carrusel a la proporción de la
+  primera. Las nuestras son todas 1080×1350, así que no se recorta nada.
+- **El token dura 60 días** y se renueva con `refrescar_token.py` (necesita tener
+  al menos 24 h de vida). La serie dura 31 días, así que no hay que renovar nada
+  durante la serie.
 - El cron de GitHub Actions puede retrasarse unos minutos cuando hay mucha carga. Para una
   serie diaria da igual; si necesitaras la hora exacta, habría que otro planificador.

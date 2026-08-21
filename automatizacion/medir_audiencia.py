@@ -6,7 +6,11 @@
 2. rendimiento por publicacion: alcance y likes de cada post ya publicado,
    cruzado con su hora, para ver que franjas funcionan.
 
-Uso:  IG_USER_ID=... IG_ACCESS_TOKEN=... python3 medir_audiencia.py
+Nota: en la via "Instagram Login" no esta documentado un permiso de insights
+aparte; si la llamada falla por permisos, el dato de horas no esta disponible en
+esta via y habria que medirlo desde la app de Instagram (Perfil > Estadisticas).
+
+Uso:  IG_ACCESS_TOKEN=... python3 medir_audiencia.py
 Si las franjas reales contradicen las HORAS de generar_calendario.py,
 cambia HORAS y el cron de .github/workflows/publicar-instagram.yml.
 """
@@ -14,11 +18,12 @@ import json, os, urllib.parse, urllib.request
 from collections import Counter
 from pathlib import Path
 
-VERSION = os.environ.get("GRAPH_VERSION", "v21.0")
+HOST = os.environ.get("GRAPH_HOST", "graph.instagram.com")
+VERSION = os.environ.get("GRAPH_VERSION", "v25.0")
 
 
 def api(ruta, datos):
-    url = f"https://graph.facebook.com/{VERSION}/{ruta}?" + urllib.parse.urlencode(datos)
+    url = f"https://{HOST}/{VERSION}/{ruta}?" + urllib.parse.urlencode(datos)
     try:
         with urllib.request.urlopen(url, timeout=60) as r:
             return json.load(r)
@@ -27,10 +32,10 @@ def api(ruta, datos):
 
 
 def main():
-    ig_user = os.environ.get("IG_USER_ID")
+    ig_user = os.environ.get("IG_USER_ID") or "me"
     token = os.environ.get("IG_ACCESS_TOKEN")
-    if not (ig_user and token):
-        raise SystemExit("exporta IG_USER_ID e IG_ACCESS_TOKEN")
+    if not token:
+        raise SystemExit("exporta IG_ACCESS_TOKEN")
 
     print("== ¿A qué hora están conectados tus seguidores? (UTC) ==")
     r = api(f"{ig_user}/insights", {"metric": "online_followers", "period": "lifetime", "access_token": token})

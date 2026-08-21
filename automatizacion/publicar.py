@@ -5,11 +5,15 @@ Imagen suelta: contenedor de medios y publicar. Carrusel: un contenedor por foto
 (is_carousel_item), un contenedor CAROUSEL con los hijos, y publicar.
 Lleva un registro para no publicar dos veces el mismo dia.
 
+Usa "Instagram API con Instagram Login": host graph.instagram.com, no requiere
+pagina de Facebook. Permisos: instagram_business_basic + instagram_business_content_publish.
+
 Variables de entorno necesarias:
-  IG_USER_ID        ID de la cuenta de Instagram Business (no el @usuario)
-  IG_ACCESS_TOKEN   token de larga duracion con instagram_content_publish
-  IMAGE_BASE_URL    URL publica HTTPS donde estan los PNG, sin barra final
-  GRAPH_VERSION     opcional, por defecto v21.0
+  IG_ACCESS_TOKEN   token de larga duracion (60 dias) del panel de la app
+  IMAGE_BASE_URL    URL publica HTTPS donde estan las imagenes, sin barra final
+  IG_USER_ID        opcional; por defecto "me", que el token ya identifica
+  GRAPH_VERSION     opcional, por defecto v25.0
+  GRAPH_HOST        opcional, por defecto graph.instagram.com
 """
 import argparse, json, os, sys, time, urllib.parse, urllib.request
 from datetime import datetime, timedelta, timezone
@@ -22,8 +26,9 @@ MADRID = timezone(timedelta(hours=2))  # CEST, la serie va de agosto a septiembr
 
 
 def api(metodo, ruta, datos=None):
-    version = os.environ.get("GRAPH_VERSION", "v21.0")
-    url = f"https://graph.facebook.com/{version}/{ruta}"
+    host = os.environ.get("GRAPH_HOST", "graph.instagram.com")
+    version = os.environ.get("GRAPH_VERSION", "v25.0")
+    url = f"https://{host}/{version}/{ruta}"
     cuerpo = None
     if metodo == "POST":
         cuerpo = urllib.parse.urlencode(datos).encode()
@@ -60,10 +65,10 @@ def esperar(contenedor, token, etiqueta="contenedor"):
 
 
 def publicar(post, ensayo):
-    ig_user = os.environ.get("IG_USER_ID")
+    ig_user = os.environ.get("IG_USER_ID") or "me"
     token = os.environ.get("IG_ACCESS_TOKEN")
     base = (os.environ.get("IMAGE_BASE_URL") or "").rstrip("/")
-    faltan = [n for n, v in [("IG_USER_ID", ig_user), ("IG_ACCESS_TOKEN", token), ("IMAGE_BASE_URL", base)] if not v]
+    faltan = [n for n, v in [("IG_ACCESS_TOKEN", token), ("IMAGE_BASE_URL", base)] if not v]
     if faltan and not ensayo:
         raise SystemExit("faltan variables de entorno: " + ", ".join(faltan))
 
