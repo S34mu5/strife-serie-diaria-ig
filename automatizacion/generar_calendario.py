@@ -37,13 +37,17 @@ def parsear():
         # audiencia: "para el alumno" / "para el club" / "cierre"
         audiencia = cabecera.split("—")[-1].strip() if "—" in cabecera else cabecera
 
+        fuente_png = archivo.group(1)
+        publicable = f"jpg/{fuente_png[:-4]}.jpg"
+
         posts.append({
             "dia": numero,
             "fecha": publica.isoformat(),
             "dia_semana": DIAS_ES[publica.weekday()],
             "hora": HORA,
             "audiencia": audiencia,
-            "archivo": archivo.group(1),
+            "origen_png": fuente_png,
+            "archivo": publicable,
             "pie": pie.group(1).strip(),
             "tags": etiquetas,
             "caption": f"{pie.group(1).strip()}\n\n{etiquetas}".strip(),

@@ -5,7 +5,8 @@
     "dia_semana": "lunes",
     "hora": "10:00",
     "audiencia": "para el alumno",
-    "archivo": "dia-01-voy.png",
+    "origen_png": "dia-01-voy.png",
+    "archivo": "jpg/dia-01-voy.jpg",
     "pie": "Un toque y tu plaza queda reservada. ¿No vas? Avisa — tu hueco lo pilla otro.",
     "tags": "#strife #strifeapp",
     "caption": "Un toque y tu plaza queda reservada. ¿No vas? Avisa — tu hueco lo pilla otro.\n\n#strife #strifeapp"
@@ -16,7 +17,8 @@
     "dia_semana": "martes",
     "hora": "10:00",
     "audiencia": "para el club",
-    "archivo": "dia-02-la-semana-montada.png",
+    "origen_png": "dia-02-la-semana-montada.png",
+    "archivo": "jpg/dia-02-la-semana-montada.jpg",
     "pie": "El horario se monta una vez y se repite solo. Cambios en dos toques, cupos y coaches incluidos.",
     "tags": "#strife #clubes",
     "caption": "El horario se monta una vez y se repite solo. Cambios en dos toques, cupos y coaches incluidos.\n\n#strife #clubes"
@@ -27,7 +29,8 @@
     "dia_semana": "miercoles",
     "hora": "10:00",
     "audiencia": "para el alumno",
-    "archivo": "dia-03-ficha-al-entrar.png",
+    "origen_png": "dia-03-ficha-al-entrar.png",
+    "archivo": "jpg/dia-03-ficha-al-entrar.jpg",
     "pie": "Llegas, escaneas el QR, entrenas. La asistencia se apunta sola.",
     "tags": "#strife #strifeapp",
     "caption": "Llegas, escaneas el QR, entrenas. La asistencia se apunta sola.\n\n#strife #strifeapp"
@@ -38,7 +41,8 @@
     "dia_semana": "jueves",
     "hora": "10:00",
     "audiencia": "para el club",
-    "archivo": "dia-04-lista-30-segundos.png",
+    "origen_png": "dia-04-lista-30-segundos.png",
+    "archivo": "jpg/dia-04-lista-30-segundos.jpg",
     "pie": "Pasar lista deja de ser un papel: presente, tarde o ausente — también el que aparece sin reservar.",
     "tags": "#strife #clubes",
     "caption": "Pasar lista deja de ser un papel: presente, tarde o ausente — también el que aparece sin reservar.\n\n#strife #clubes"
@@ -49,7 +53,8 @@
     "dia_semana": "viernes",
     "hora": "10:00",
     "audiencia": "para el alumno",
-    "archivo": "dia-05-mes-nuevo-podio-nuevo.png",
+    "origen_png": "dia-05-mes-nuevo-podio-nuevo.png",
+    "archivo": "jpg/dia-05-mes-nuevo-podio-nuevo.jpg",
     "pie": "Puntos solo por asistencia fichada. El día 1, todo el mundo a cero.",
     "tags": "#strife #ranking",
     "caption": "Puntos solo por asistencia fichada. El día 1, todo el mundo a cero.\n\n#strife #ranking"
@@ -60,7 +65,8 @@
     "dia_semana": "sabado",
     "hora": "10:00",
     "audiencia": "para el club",
-    "archivo": "dia-06-el-mes-cuadrado.png",
+    "origen_png": "dia-06-el-mes-cuadrado.png",
+    "archivo": "jpg/dia-06-el-mes-cuadrado.jpg",
     "pie": "Fin de mes sin hoja de cálculo: lo cobrado, lo pendiente y quién falta por pagar.",
     "tags": "#strife #clubes",
     "caption": "Fin de mes sin hoja de cálculo: lo cobrado, lo pendiente y quién falta por pagar.\n\n#strife #clubes"
@@ -71,7 +77,8 @@
     "dia_semana": "domingo",
     "hora": "10:00",
     "audiencia": "cierre",
-    "archivo": "dia-07-cierre-semana-1.png",
+    "origen_png": "dia-07-cierre-semana-1.png",
+    "archivo": "jpg/dia-07-cierre-semana-1.jpg",
     "pie": "Beta cerrada · verano 2026. Los primeros clubes ya están dentro.",
     "tags": "#strife",
     "caption": "Beta cerrada · verano 2026. Los primeros clubes ya están dentro.\n\n#strife"
@@ -82,7 +89,8 @@
     "dia_semana": "lunes",
     "hora": "10:00",
     "audiencia": "para el alumno",
-    "archivo": "dia-08-cada-roll-apuntado.png",
+    "origen_png": "dia-08-cada-roll-apuntado.png",
+    "archivo": "jpg/dia-08-cada-roll-apuntado.jpg",
     "pie": "El parte del día en 30 segundos: con quién, cómo acabó y con qué.",
     "tags": "#strife #sparring",
     "caption": "El parte del día en 30 segundos: con quién, cómo acabó y con qué.\n\n#strife #sparring"
@@ -93,7 +101,8 @@
     "dia_semana": "martes",
     "hora": "10:00",
     "audiencia": "para el club",
-    "archivo": "dia-09-dicho-una-vez.png",
+    "origen_png": "dia-09-dicho-una-vez.png",
+    "archivo": "jpg/dia-09-dicho-una-vez.jpg",
     "pie": "Horario de agosto, norma nueva, seminario: se publica una vez y lo ve todo el club.",
     "tags": "#strife #clubes",
     "caption": "Horario de agosto, norma nueva, seminario: se publica una vez y lo ve todo el club.\n\n#strife #clubes"
@@ -104,7 +113,8 @@
     "dia_semana": "miercoles",
     "hora": "10:00",
     "audiencia": "para el alumno",
-    "archivo": "dia-10-el-peso-a-raya.png",
+    "origen_png": "dia-10-el-peso-a-raya.png",
+    "archivo": "jpg/dia-10-el-peso-a-raya.jpg",
     "pie": "La báscula vive en tu ficha, con el objetivo sincronizado con el peso de tu próxima competición.",
     "tags": "#strife #pesaje",
     "caption": "La báscula vive en tu ficha, con el objetivo sincronizado con el peso de tu próxima competición.\n\n#strife #pesaje"
@@ -115,7 +125,8 @@
     "dia_semana": "jueves",
     "hora": "10:00",
     "audiencia": "para el club",
-    "archivo": "dia-11-la-tienda-sin-mostrador.png",
+    "origen_png": "dia-11-la-tienda-sin-mostrador.png",
+    "archivo": "jpg/dia-11-la-tienda-sin-mostrador.jpg",
     "pie": "Kimonos, camisetas y licencias: se reservan en la app y quedan apuntadas.",
     "tags": "#strife #clubes",
     "caption": "Kimonos, camisetas y licencias: se reservan en la app y quedan apuntadas.\n\n#strife #clubes"
@@ -126,7 +137,8 @@
     "dia_semana": "viernes",
     "hora": "10:00",
     "audiencia": "para el alumno",
-    "archivo": "dia-12-tu-vitrina-contigo.png",
+    "origen_png": "dia-12-tu-vitrina-contigo.png",
+    "archivo": "jpg/dia-12-tu-vitrina-contigo.jpg",
     "pie": "Lo que ganas no se queda en el tatami: parches, medallas y cinturones en tu ficha.",
     "tags": "#strife #logros",
     "caption": "Lo que ganas no se queda en el tatami: parches, medallas y cinturones en tu ficha.\n\n#strife #logros"
@@ -137,7 +149,8 @@
     "dia_semana": "sabado",
     "hora": "10:00",
     "audiencia": "para el club",
-    "archivo": "dia-13-el-club-en-orden.png",
+    "origen_png": "dia-13-el-club-en-orden.png",
+    "archivo": "jpg/dia-13-el-club-en-orden.jpg",
     "pie": "Altas sin papeleo: solicitudes, permisos y la ficha de cada alumno en un sitio.",
     "tags": "#strife #clubes",
     "caption": "Altas sin papeleo: solicitudes, permisos y la ficha de cada alumno en un sitio.\n\n#strife #clubes"
@@ -148,7 +161,8 @@
     "dia_semana": "domingo",
     "hora": "10:00",
     "audiencia": "cierre",
-    "archivo": "dia-14-cierre-semana-2.png",
+    "origen_png": "dia-14-cierre-semana-2.png",
+    "archivo": "jpg/dia-14-cierre-semana-2.jpg",
     "pie": "Semana dos. La beta sigue cerrada; la lista de espera, abierta.",
     "tags": "#strife",
     "caption": "Semana dos. La beta sigue cerrada; la lista de espera, abierta.\n\n#strife"
@@ -159,7 +173,8 @@
     "dia_semana": "lunes",
     "hora": "10:00",
     "audiencia": "para el alumno",
-    "archivo": "dia-15-compites-aparece.png",
+    "origen_png": "dia-15-compites-aparece.png",
+    "archivo": "jpg/dia-15-compites-aparece.jpg",
     "pie": "Compites el sábado; el lunes tu ficha ya lo sabe. El palmarés se importa automáticamente desde tu perfil de competición.",
     "tags": "#strife #competicion",
     "caption": "Compites el sábado; el lunes tu ficha ya lo sabe. El palmarés se importa automáticamente desde tu perfil de competición.\n\n#strife #competicion"
@@ -170,7 +185,8 @@
     "dia_semana": "martes",
     "hora": "10:00",
     "audiencia": "para el club",
-    "archivo": "dia-16-nadie-se-descuelga.png",
+    "origen_png": "dia-16-nadie-se-descuelga.png",
+    "archivo": "jpg/dia-16-nadie-se-descuelga.jpg",
     "pie": "Rachas rotas y ausencias largas, a la vista antes de perder al alumno.",
     "tags": "#strife #clubes",
     "caption": "Rachas rotas y ausencias largas, a la vista antes de perder al alumno.\n\n#strife #clubes"
@@ -181,7 +197,8 @@
     "dia_semana": "miercoles",
     "hora": "10:00",
     "audiencia": "para el alumno",
-    "archivo": "dia-17-cara-a-cara.png",
+    "origen_png": "dia-17-cara-a-cara.png",
+    "archivo": "jpg/dia-17-cara-a-cara.jpg",
     "pie": "Elige rival en el ranking y compárate: puntos, rachas, asistencia.",
     "tags": "#strife #ranking",
     "caption": "Elige rival en el ranking y compárate: puntos, rachas, asistencia.\n\n#strife #ranking"
@@ -192,7 +209,8 @@
     "dia_semana": "jueves",
     "hora": "10:00",
     "audiencia": "para el club",
-    "archivo": "dia-18-el-grupo-sin-ruido.png",
+    "origen_png": "dia-18-el-grupo-sin-ruido.png",
+    "archivo": "jpg/dia-18-el-grupo-sin-ruido.jpg",
     "pie": "El grupo del club, dentro de la app: mensajes del staff destacados y moderación de verdad.",
     "tags": "#strife #clubes",
     "caption": "El grupo del club, dentro de la app: mensajes del staff destacados y moderación de verdad.\n\n#strife #clubes"
@@ -203,7 +221,8 @@
     "dia_semana": "viernes",
     "hora": "10:00",
     "audiencia": "para el alumno",
-    "archivo": "dia-19-tu-cinturon-tiene-historia.png",
+    "origen_png": "dia-19-tu-cinturon-tiene-historia.png",
+    "archivo": "jpg/dia-19-tu-cinturon-tiene-historia.jpg",
     "pie": "Cada grado con fecha y firma. Tu linaje, de tu profe hacia arriba.",
     "tags": "#strife #bjj",
     "caption": "Cada grado con fecha y firma. Tu linaje, de tu profe hacia arriba.\n\n#strife #bjj"
@@ -214,7 +233,8 @@
     "dia_semana": "sabado",
     "hora": "10:00",
     "audiencia": "para el club",
-    "archivo": "dia-20-la-puerta-con-criterio.png",
+    "origen_png": "dia-20-la-puerta-con-criterio.png",
+    "archivo": "jpg/dia-20-la-puerta-con-criterio.jpg",
     "pie": "Las altas llegan con ficha: apruebas o rechazas en un toque, y queda registrado.",
     "tags": "#strife #clubes",
     "caption": "Las altas llegan con ficha: apruebas o rechazas en un toque, y queda registrado.\n\n#strife #clubes"
@@ -225,7 +245,8 @@
     "dia_semana": "domingo",
     "hora": "10:00",
     "audiencia": "cierre",
-    "archivo": "dia-21-cierre-semana-3.png",
+    "origen_png": "dia-21-cierre-semana-3.png",
+    "archivo": "jpg/dia-21-cierre-semana-3.jpg",
     "pie": "Tres semanas, una idea: el club entero en una app. Beta cerrada · verano 2026.",
     "tags": "#strife",
     "caption": "Tres semanas, una idea: el club entero en una app. Beta cerrada · verano 2026.\n\n#strife"
@@ -236,7 +257,8 @@
     "dia_semana": "lunes",
     "hora": "10:00",
     "audiencia": "para el alumno",
-    "archivo": "dia-22-empieza-aqui.png",
+    "origen_png": "dia-22-empieza-aqui.png",
+    "archivo": "jpg/dia-22-empieza-aqui.jpg",
     "pie": "Descargar, elegir club y pedir plaza. El primer día empieza antes de llegar.",
     "tags": "#strife #strifeapp",
     "caption": "Descargar, elegir club y pedir plaza. El primer día empieza antes de llegar.\n\n#strife #strifeapp"
@@ -247,7 +269,8 @@
     "dia_semana": "martes",
     "hora": "10:00",
     "audiencia": "para el club",
-    "archivo": "dia-23-abre-tu-club.png",
+    "origen_png": "dia-23-abre-tu-club.png",
+    "archivo": "jpg/dia-23-abre-tu-club.jpg",
     "pie": "Dar de alta tu club lleva una solicitud, no una centralita.",
     "tags": "#strife #clubes",
     "caption": "Dar de alta tu club lleva una solicitud, no una centralita.\n\n#strife #clubes"
@@ -258,7 +281,8 @@
     "dia_semana": "miercoles",
     "hora": "10:00",
     "audiencia": "para el alumno",
-    "archivo": "dia-24-tu-cuota-clara.png",
+    "origen_png": "dia-24-tu-cuota-clara.png",
+    "archivo": "jpg/dia-24-tu-cuota-clara.jpg",
     "pie": "Sin sorpresas a fin de mes: cuota, bonos y recibos en tu perfil.",
     "tags": "#strife #strifeapp",
     "caption": "Sin sorpresas a fin de mes: cuota, bonos y recibos en tu perfil.\n\n#strife #strifeapp"
@@ -269,7 +293,8 @@
     "dia_semana": "jueves",
     "hora": "10:00",
     "audiencia": "para el club",
-    "archivo": "dia-25-invita-en-un-toque.png",
+    "origen_png": "dia-25-invita-en-un-toque.png",
+    "archivo": "jpg/dia-25-invita-en-un-toque.jpg",
     "pie": "Nombre, @usuario o email: la invitación llega y el alta se hace sola.",
     "tags": "#strife #clubes",
     "caption": "Nombre, @usuario o email: la invitación llega y el alta se hace sola.\n\n#strife #clubes"
@@ -280,7 +305,8 @@
     "dia_semana": "viernes",
     "hora": "10:00",
     "audiencia": "para el alumno",
-    "archivo": "dia-26-sabes-a-que-vas.png",
+    "origen_png": "dia-26-sabes-a-que-vas.png",
+    "archivo": "jpg/dia-26-sabes-a-que-vas.jpg",
     "pie": "Cada clase con su plan, su coach y su lista. Sabes a qué vas.",
     "tags": "#strife #strifeapp",
     "caption": "Cada clase con su plan, su coach y su lista. Sabes a qué vas.\n\n#strife #strifeapp"
@@ -291,7 +317,8 @@
     "dia_semana": "sabado",
     "hora": "10:00",
     "audiencia": "para el club",
-    "archivo": "dia-27-tu-club-tu-casa.png",
+    "origen_png": "dia-27-tu-club-tu-casa.png",
+    "archivo": "jpg/dia-27-tu-club-tu-casa.jpg",
     "pie": "La portada del club la eliges tú: emblema, colores, horarios y estado.",
     "tags": "#strife #clubes",
     "caption": "La portada del club la eliges tú: emblema, colores, horarios y estado.\n\n#strife #clubes"
@@ -302,7 +329,8 @@
     "dia_semana": "domingo",
     "hora": "10:00",
     "audiencia": "cierre",
-    "archivo": "dia-28-cierre-semana-4.png",
+    "origen_png": "dia-28-cierre-semana-4.png",
+    "archivo": "jpg/dia-28-cierre-semana-4.jpg",
     "pie": "Cuatro semanas, todo el club en una app. Beta cerrada · verano 2026.",
     "tags": "#strife",
     "caption": "Cuatro semanas, todo el club en una app. Beta cerrada · verano 2026.\n\n#strife"
