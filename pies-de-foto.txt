@@ -1,4 +1,4 @@
-STRIFE — SERIE DIARIA · 28 posts, uno al día
+STRIFE — SERIE DIARIA · 28 posts diarios + día 29 y dos carruseles-tutorial
 Pie de foto listo para pegar bajo cada imagen.
 
 DÍA 1 · LUNES — para el alumno
@@ -140,3 +140,18 @@ DÍA 28 · DOMINGO — cierre
 Archivo: dia-28-cierre-semana-4.png (1080×1080)
 Pie: Cuatro semanas, todo el club en una app. Beta cerrada · verano 2026.
 Tags: #strife
+
+DÍA 29 · LUNES — para el alumno
+Archivo: dia-29-tu-juego-en-datos.png (1080×1350)
+Pie: Mi juego vive en tu perfil: rolls del mes, con quién ruedas y qué remata. El sparring, contado.
+Tags: #strife #sparring
+
+CARRUSEL · GUÍA — TU PRIMER DÍA (alumno)
+Carpeta: guia-alumno/ (6 fotos, una publicación; subir en orden 01→06)
+Pie: Tu primer día, paso a paso: cuenta, perfil, rol y plaza pedida. Guárdatelo para el día uno.
+Tags: #strife #tutorial
+
+CARRUSEL · GUÍA — ABRE TU CLUB (admin / admin+coach)
+Carpeta: guia-club/ (8 fotos, una publicación; subir en orden 01→08)
+Pie: Abrir tu club, paso a paso: cuenta, rol, centro, disciplinas y solicitud enviada. Cinco minutos.
+Tags: #strife #clubes #tutorial

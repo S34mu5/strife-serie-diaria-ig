@@ -2,8 +2,11 @@ name: Publicar serie diaria en Instagram
 
 on:
   schedule:
-    # 08:00 UTC = 10:00 Europe/Madrid en horario de verano (la serie va de agosto a septiembre)
-    - cron: "0 8 * * *"
+    # Horario de verano (la serie va de agosto a septiembre, todo CEST = UTC+2).
+    # L-V 17:30 UTC = 19:30 Madrid — ventana de entreno del publico de contacto.
+    # S-D 09:30 UTC = 11:30 Madrid — pico matinal de fin de semana.
+    - cron: "30 17 * * 1-5"
+    - cron: "30 9 * * 0,6"
   workflow_dispatch:
     inputs:
       dia:

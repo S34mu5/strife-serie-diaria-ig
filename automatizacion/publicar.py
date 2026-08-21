@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Publica en Instagram el post que toca hoy, segun calendario.json.
 
-Usa la Instagram Graph API en dos pasos: crear contenedor de medios y publicarlo.
+Imagen suelta: contenedor de medios y publicar. Carrusel: un contenedor por foto
+(is_carousel_item), un contenedor CAROUSEL con los hijos, y publicar.
 Lleva un registro para no publicar dos veces el mismo dia.
 
 Variables de entorno necesarias:
@@ -45,6 +46,19 @@ def guardar_registro(registro):
     REGISTRO.write_text(json.dumps(registro, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def esperar(contenedor, token, etiqueta="contenedor"):
+    for _ in range(20):
+        estado = api("GET", contenedor, {"fields": "status_code,status", "access_token": token})
+        codigo = estado.get("status_code")
+        if codigo == "FINISHED":
+            return
+        if codigo == "ERROR":
+            raise SystemExit(f"  Instagram no pudo procesar el {etiqueta}: {estado.get('status')}")
+        print(f"  esperando {etiqueta} ({codigo}) ...")
+        time.sleep(5)
+    raise SystemExit(f"  el {etiqueta} no llego a FINISHED en 100 segundos")
+
+
 def publicar(post, ensayo):
     ig_user = os.environ.get("IG_USER_ID")
     token = os.environ.get("IG_ACCESS_TOKEN")
@@ -53,31 +67,37 @@ def publicar(post, ensayo):
     if faltan and not ensayo:
         raise SystemExit("faltan variables de entorno: " + ", ".join(faltan))
 
-    imagen = f"{base}/{urllib.parse.quote(post['archivo'])}"
-    print(f"DIA {post['dia']} · {post['fecha']} ({post['dia_semana']}) · {post['audiencia']}")
-    print(f"  imagen : {imagen}")
+    archivos = post.get("archivos") or [post["archivo"]]
+    urls = [f"{base}/{urllib.parse.quote(a)}" for a in archivos]
+    tipo = post.get("tipo", "imagen")
+    print(f"{post['id']} · {post['fecha']} ({post['dia_semana']}) · {post['audiencia']} · {tipo}")
+    for u in urls:
+        print(f"  imagen : {u}")
     print(f"  caption: {post['caption'][:80]}{'...' if len(post['caption']) > 80 else ''}")
 
     if ensayo:
         print("  [ensayo] no se publica nada")
         return None
 
-    contenedor = api("POST", f"{ig_user}/media", {
-        "image_url": imagen, "caption": post["caption"], "access_token": token,
-    })["id"]
-    print(f"  contenedor creado: {contenedor}")
-
-    for intento in range(20):
-        estado = api("GET", contenedor, {"fields": "status_code,status", "access_token": token})
-        codigo = estado.get("status_code")
-        if codigo == "FINISHED":
-            break
-        if codigo == "ERROR":
-            raise SystemExit(f"  Instagram no pudo procesar la imagen: {estado.get('status')}")
-        print(f"  esperando procesado ({codigo}) ...")
-        time.sleep(5)
+    if tipo == "carrusel":
+        hijos = []
+        for u in urls:
+            hijo = api("POST", f"{ig_user}/media", {
+                "image_url": u, "is_carousel_item": "true", "access_token": token,
+            })["id"]
+            esperar(hijo, token, "hijo del carrusel")
+            hijos.append(hijo)
+            print(f"  hijo listo: {hijo}")
+        contenedor = api("POST", f"{ig_user}/media", {
+            "media_type": "CAROUSEL", "children": ",".join(hijos),
+            "caption": post["caption"], "access_token": token,
+        })["id"]
     else:
-        raise SystemExit("  el contenedor no llego a FINISHED en 100 segundos")
+        contenedor = api("POST", f"{ig_user}/media", {
+            "image_url": urls[0], "caption": post["caption"], "access_token": token,
+        })["id"]
+    print(f"  contenedor creado: {contenedor}")
+    esperar(contenedor, token)
 
     publicado = api("POST", f"{ig_user}/media_publish", {
         "creation_id": contenedor, "access_token": token,
@@ -89,14 +109,19 @@ def publicar(post, ensayo):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--fecha", help="AAAA-MM-DD; por defecto hoy en Europe/Madrid")
-    p.add_argument("--dia", type=int, help="publicar un dia concreto de la serie (1-28)")
+    p.add_argument("--dia", type=int, help="publicar un dia concreto de la serie (1-29)")
+    p.add_argument("--id", dest="post_id", help="publicar por id (p. ej. guia-alumno, guia-club, dia-07)")
     p.add_argument("--dry-run", action="store_true", help="ensayo: muestra que haria sin publicar")
     p.add_argument("--force", action="store_true", help="publicar aunque ya conste en el registro")
     args = p.parse_args()
 
     posts = json.loads(CALENDARIO.read_text(encoding="utf-8"))
-    if args.dia:
-        elegidos = [x for x in posts if x["dia"] == args.dia]
+    if args.post_id:
+        elegidos = [x for x in posts if x["id"] == args.post_id]
+        if not elegidos:
+            raise SystemExit(f"no existe el id {args.post_id}")
+    elif args.dia:
+        elegidos = [x for x in posts if x["tipo"] == "imagen" and x["dia"] == args.dia]
     else:
         fecha = args.fecha or datetime.now(MADRID).date().isoformat()
         elegidos = [x for x in posts if x["fecha"] == fecha]
@@ -106,9 +131,9 @@ def main():
 
     post = elegidos[0]
     registro = cargar_registro()
-    clave = str(post["dia"])
+    clave = post["id"]
     if clave in registro and not args.force:
-        print(f"DIA {post['dia']} ya se publico el {registro[clave]['publicado_en']} "
+        print(f"{post['id']} ya se publico el {registro[clave]['publicado_en']} "
               f"(id {registro[clave]['post_id']}). Nada que hacer.")
         return 0
 
@@ -116,7 +141,7 @@ def main():
     if post_id:
         registro[clave] = {
             "fecha_programada": post["fecha"],
-            "archivo": post["archivo"],
+            "archivos": post.get("archivos") or [post["archivo"]],
             "post_id": post_id,
             "publicado_en": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         }

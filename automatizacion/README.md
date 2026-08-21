@@ -1,14 +1,28 @@
-# Serie diaria de Strife en Instagram · 28 posts automatizados
+# Serie diaria de Strife en Instagram · 29 posts + 2 carruseles
 
-Publica un post al día, del **lunes 24 de agosto** al **domingo 20 de septiembre de 2026**,
-a las **10:00 (Europe/Madrid)**. Lo ejecuta GitHub Actions en la nube: no depende de que
-tu Mac esté encendido.
+Publica una vez al día, del **lunes 24 de agosto** al **miércoles 23 de septiembre de 2026**:
+los 29 posts de imagen y, los dos últimos días, los carruseles-tutorial
+(guía del alumno, 6 fotos; guía del club, 8 fotos). Lo ejecuta GitHub Actions
+en la nube: no depende de que tu Mac esté encendido.
+
+## Horas de publicación
+
+- **L–V 19:30** (Madrid): el público de deportes de contacto entrena de tarde;
+  scrollea justo antes y después.
+- **S–D 11:30**: pico matinal de fin de semana, después del open mat.
+
+Son horas basadas en estudios del sector — la cuenta aún no tiene audiencia que
+medir. Cuando pase de ~100 seguidores, `medir_audiencia.py` (con las mismas
+variables de entorno) imprime a qué hora están conectados **tus** seguidores y
+el alcance de cada post publicado. Si contradice estas franjas, cambia `HORAS`
+en `generar_calendario.py` y los `cron` del workflow.
 
 ## Piezas
 
 | Archivo | Qué hace |
 |---|---|
-| `generar_calendario.py` | Lee `../pies-de-foto.txt` y genera `calendario.json`. Valida que existan los 28 PNG, que los captions no pasen de 2200 caracteres y que los cierres caigan en domingo. |
+| `generar_calendario.py` | Lee `../pies-de-foto.txt` y genera `calendario.json`: 29 posts + 2 carruseles. Valida archivos, límites de caption y que los cierres caigan en domingo. |
+| `medir_audiencia.py` | Horas de conexión reales de tus seguidores + alcance de cada post publicado, vía Insights. |
 | `calendario.json` | El calendario ya generado: día, fecha, archivo, pie, tags y caption final. |
 | `publicar.py` | Publica el post que toca hoy vía Instagram Graph API. |
 | `registro.json` | Se crea al primer post. Guarda qué días ya se publicaron para no duplicar nunca. |
@@ -58,6 +72,7 @@ arriba a la derecha y pide estos permisos con *Add permissions*:
 
 - `instagram_basic`
 - `instagram_content_publish`
+- `instagram_manage_insights`  ← para medir la audiencia con `medir_audiencia.py`
 - `pages_show_list`
 - `pages_read_engagement`
 
@@ -120,6 +135,12 @@ Publicar un día concreto a mano, de verdad:
 IG_USER_ID=... IG_ACCESS_TOKEN=... IMAGE_BASE_URL=... python3 publicar.py --dia 1
 ```
 
+Los carruseles también se pueden lanzar por id:
+
+```bash
+python3 publicar.py --id guia-alumno --dry-run
+```
+
 ## Notas de la API que conviene saber
 
 - **Las imágenes necesitan URL pública HTTPS.** La Graph API no acepta subida de archivos:
@@ -131,5 +152,8 @@ IG_USER_ID=... IG_ACCESS_TOKEN=... IMAGE_BASE_URL=... python3 publicar.py --dia 
 - **La Graph API de Instagram no programa posts.** El `scheduled_publish_time` existe para
   páginas de Facebook, no para Instagram. El calendario lo pone el cron de Actions.
 - **Límite de 50 publicaciones cada 24 horas.** Nosotros hacemos 1 al día.
+- **Carruseles:** cada foto se sube como contenedor hijo (`is_carousel_item`),
+  luego un contenedor `CAROUSEL` con los hijos y el pie, y se publica. Máximo
+  10 fotos; las nuestras son 6 y 8. Un carrusel cuenta como UNA publicación.
 - El cron de GitHub Actions puede retrasarse unos minutos cuando hay mucha carga. Para una
   serie diaria da igual; si necesitaras la hora exacta, habría que otro planificador.

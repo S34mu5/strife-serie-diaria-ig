@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Convierte pies-de-foto.txt en calendario.json (28 posts, uno al dia)."""
+"""Convierte pies-de-foto.txt en calendario.json.
+
+Serie: 29 posts de imagen (uno al dia desde INICIO) + 2 carruseles-tutorial
+que se publican los dos dias siguientes al dia 29.
+"""
 import json, re, unicodedata
 from datetime import date, timedelta
 from pathlib import Path
@@ -9,66 +13,97 @@ FUENTE = RAIZ / "pies-de-foto.txt"
 DESTINO = Path(__file__).resolve().parent / "calendario.json"
 
 INICIO = date(2026, 8, 24)   # lunes
-HORA = "10:00"               # Europe/Madrid
+# Hora por dia de semana (Europe/Madrid). Publico de deportes de contacto:
+# L-V 19:30 (ventana de entreno de tarde), S-D 11:30 (post open mat).
+# Cuando la cuenta pase de 100 seguidores, medir_audiencia.py da las horas reales.
+HORAS = ["19:30", "19:30", "19:30", "19:30", "19:30", "11:30", "11:30"]
 DIAS_ES = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"]
+
+# Los carruseles no llevan fecha en pies-de-foto.txt: siguen la cadencia diaria
+# tras el dia 29 (alumno primero, club despues).
+CARRUSELES = {
+    "TU PRIMER DÍA": {"id": "guia-alumno", "carpeta": "guia-alumno", "offset": 1},
+    "ABRE TU CLUB": {"id": "guia-club", "carpeta": "guia-club", "offset": 2},
+}
 
 
 def sin_tildes(texto):
     return "".join(c for c in unicodedata.normalize("NFD", texto) if unicodedata.category(c) != "Mn")
 
 
+def campo(cuerpo, nombre):
+    m = re.search(rf"^{nombre}:\s*(.+)$", cuerpo, re.MULTILINE)
+    return m.group(1).strip() if m else None
+
+
 def parsear():
     texto = FUENTE.read_text(encoding="utf-8")
-    bloques = re.split(r"^D[ÍI]A\s+(\d+)\s*·\s*(.+?)$", texto, flags=re.MULTILINE)[1:]
     posts = []
-    for i in range(0, len(bloques), 3):
-        numero = int(bloques[i])
-        cabecera = bloques[i + 1].strip()
-        cuerpo = bloques[i + 2]
 
-        archivo = re.search(r"^Archivo:\s*(\S+\.png)", cuerpo, re.MULTILINE)
-        pie = re.search(r"^Pie:\s*(.+)$", cuerpo, re.MULTILINE)
-        tags = re.search(r"^Tags:\s*(.+)$", cuerpo, re.MULTILINE)
+    # posts diarios de imagen
+    for m in re.finditer(r"^D[ÍI]A\s+(\d+)\s*·\s*(.+?)$([\s\S]*?)(?=^D[ÍI]A\s|\ZCARRUSEL|^CARRUSEL|\Z)", texto, re.MULTILINE):
+        numero, cabecera, cuerpo = int(m.group(1)), m.group(2).strip(), m.group(3)
+        archivo = campo(cuerpo, "Archivo")
+        pie, tags = campo(cuerpo, "Pie"), campo(cuerpo, "Tags") or ""
         if not (archivo and pie):
-            raise SystemExit(f"DIA {numero}: falta Archivo o Pie en pies-de-foto.txt")
-
+            raise SystemExit(f"DIA {numero}: falta Archivo o Pie")
+        archivo = re.sub(r"\s*\(.*\)$", "", archivo)  # quitar "(1080×1350)"
         publica = INICIO + timedelta(days=numero - 1)
-        etiquetas = tags.group(1).strip() if tags else ""
-        # audiencia: "para el alumno" / "para el club" / "cierre"
-        audiencia = cabecera.split("—")[-1].strip() if "—" in cabecera else cabecera
-
-        fuente_png = archivo.group(1)
-        publicable = f"jpg/{fuente_png[:-4]}.jpg"
-
         posts.append({
-            "dia": numero,
-            "fecha": publica.isoformat(),
-            "dia_semana": DIAS_ES[publica.weekday()],
-            "hora": HORA,
-            "audiencia": audiencia,
-            "origen_png": fuente_png,
-            "archivo": publicable,
-            "pie": pie.group(1).strip(),
-            "tags": etiquetas,
-            "caption": f"{pie.group(1).strip()}\n\n{etiquetas}".strip(),
+            "id": f"dia-{numero:02d}", "tipo": "imagen", "dia": numero,
+            "fecha": publica.isoformat(), "dia_semana": DIAS_ES[publica.weekday()], "hora": HORAS[publica.weekday()],
+            "audiencia": cabecera.split("—")[-1].strip() if "—" in cabecera else cabecera,
+            "archivo": f"jpg/{archivo[:-4]}.jpg",
+            "origen_png": archivo,
+            "caption": f"{pie}\n\n{tags}".strip(),
         })
+
+    ultimo = max(p["dia"] for p in posts)
+
+    # carruseles
+    for m in re.finditer(r"^CARRUSEL\s*·\s*(.+?)$([\s\S]*?)(?=^CARRUSEL\s|^D[ÍI]A\s|\Z)", texto, re.MULTILINE):
+        cabecera, cuerpo = m.group(1).strip(), m.group(2)
+        clave = next((k for k in CARRUSELES if k in cabecera.upper() or k in sin_tildes(cabecera).upper()), None)
+        if clave is None:
+            raise SystemExit(f"carrusel no reconocido: {cabecera}")
+        c = CARRUSELES[clave]
+        pie, tags = campo(cuerpo, "Pie"), campo(cuerpo, "Tags") or ""
+        archivos = sorted((RAIZ / "jpg" / c["carpeta"]).glob("*.jpg"))
+        publica = INICIO + timedelta(days=ultimo - 1 + c["offset"])
+        posts.append({
+            "id": c["id"], "tipo": "carrusel", "dia": ultimo + c["offset"],
+            "fecha": publica.isoformat(), "dia_semana": DIAS_ES[publica.weekday()], "hora": HORAS[publica.weekday()],
+            "audiencia": cabecera,
+            "archivos": [f"jpg/{c['carpeta']}/{a.name}" for a in archivos],
+            "caption": f"{pie}\n\n{tags}".strip(),
+        })
+
+    posts.sort(key=lambda p: p["fecha"])
     return posts
 
 
 def validar(posts):
     errores = []
-    if len(posts) != 28:
-        errores.append(f"se esperaban 28 posts, hay {len(posts)}")
-    if [p["dia"] for p in posts] != list(range(1, len(posts) + 1)):
-        errores.append("los numeros de dia no son consecutivos del 1 al 28")
+    imagenes = [p for p in posts if p["tipo"] == "imagen"]
+    carruseles = [p for p in posts if p["tipo"] == "carrusel"]
+    if len(imagenes) != 29:
+        errores.append(f"se esperaban 29 posts de imagen, hay {len(imagenes)}")
+    if len(carruseles) != 2:
+        errores.append(f"se esperaban 2 carruseles, hay {len(carruseles)}")
+    fechas = [p["fecha"] for p in posts]
+    if len(set(fechas)) != len(fechas):
+        errores.append("hay fechas duplicadas")
     for p in posts:
-        if not (RAIZ / p["archivo"]).exists():
-            errores.append(f"DIA {p['dia']}: no existe el archivo {p['archivo']}")
+        archivos = p.get("archivos") or [p["archivo"]]
+        if not (2 <= len(archivos) <= 10) and p["tipo"] == "carrusel":
+            errores.append(f"{p['id']}: carrusel con {len(archivos)} fotos (Instagram: 2-10)")
+        for a in archivos:
+            if not (RAIZ / a).exists():
+                errores.append(f"{p['id']}: no existe {a}")
         if len(p["caption"]) > 2200:
-            errores.append(f"DIA {p['dia']}: caption de {len(p['caption'])} caracteres (limite 2200)")
-        # el guion marca los cierres en domingo
+            errores.append(f"{p['id']}: caption de {len(p['caption'])} caracteres (limite 2200)")
         if "cierre" in sin_tildes(p["audiencia"]).lower() and p["dia_semana"] != "domingo":
-            errores.append(f"DIA {p['dia']}: es un cierre pero cae en {p['dia_semana']}")
+            errores.append(f"{p['id']}: es un cierre pero cae en {p['dia_semana']}")
     return errores
 
 
@@ -76,11 +111,14 @@ if __name__ == "__main__":
     posts = parsear()
     errores = validar(posts)
     DESTINO.write_text(json.dumps(posts, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"{len(posts)} posts -> {DESTINO.name}")
-    print(f"del {posts[0]['fecha']} ({posts[0]['dia_semana']}) al {posts[-1]['fecha']} ({posts[-1]['dia_semana']}) a las {HORA}")
+    print(f"{len(posts)} publicaciones -> {DESTINO.name}")
+    print(f"del {posts[0]['fecha']} ({posts[0]['dia_semana']}) al {posts[-1]['fecha']} ({posts[-1]['dia_semana']}) · L-V {HORAS[0]} · S-D {HORAS[5]}")
+    for p in posts[-3:]:
+        extra = f" · {len(p['archivos'])} fotos" if p["tipo"] == "carrusel" else ""
+        print(f"  {p['fecha']} {p['dia_semana']:9s} {p['id']}{extra}")
     if errores:
         print("\nAVISOS:")
         for e in errores:
             print(f"  - {e}")
         raise SystemExit(1)
-    print("validacion OK: 28 archivos presentes, captions dentro de limite, cierres en domingo")
+    print("validacion OK")
