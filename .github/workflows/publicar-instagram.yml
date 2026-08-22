@@ -1,3 +1,6 @@
+# PAUSADO a proposito: no se publica nada hasta que la app este en la store.
+# Deshabilitado desde Actions (disabled_manually), no comentando el cron, para
+# que reactivarlo sea un boton: Actions > este workflow > Enable workflow.
 name: Publicar serie diaria en Instagram
 
 on:

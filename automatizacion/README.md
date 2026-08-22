@@ -1,5 +1,9 @@
 # Serie diaria de Strife en Instagram · 29 posts + 2 carruseles
 
+> **PAUSADO.** La automatizacion esta deshabilitada hasta que la app este en
+> la store. Reactivar: pestana **Actions** > *Publicar serie diaria en Instagram*
+> > **Enable workflow**. Manual completo en [MANUAL.md](../MANUAL.md).
+
 Publica una vez al día, del **lunes 24 de agosto** al **miércoles 23 de septiembre de 2026**:
 los 29 posts de imagen y, los dos últimos días, los carruseles-tutorial
 (guía del alumno, 6 fotos; guía del club, 8 fotos). Lo ejecuta GitHub Actions
