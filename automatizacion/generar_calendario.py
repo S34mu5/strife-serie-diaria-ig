@@ -4,7 +4,7 @@
 Serie: 29 posts de imagen (uno al dia desde INICIO) + 2 carruseles-tutorial
 que se publican los dos dias siguientes al dia 29.
 """
-import json, re, unicodedata
+import json, os, re, sys, unicodedata
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -12,7 +12,32 @@ RAIZ = Path(__file__).resolve().parent.parent
 FUENTE = RAIZ / "pies-de-foto.txt"
 DESTINO = Path(__file__).resolve().parent / "calendario.json"
 
-INICIO = date(2026, 8, 24)   # lunes
+# Fecha de arranque. Se puede cambiar sin tocar el codigo, por orden de prioridad:
+#   python3 generar_calendario.py 2026-09-21     (argumento)
+#   FECHA_INICIO=2026-09-21 python3 generar_calendario.py   (variable de entorno)
+# Tiene que ser LUNES: la serie alterna publico por dia de semana, los cierres
+# caen en domingo y las horas cambian entre semana y fin de semana.
+INICIO_POR_DEFECTO = date(2026, 8, 24)
+
+
+def leer_inicio():
+    crudo = (sys.argv[1] if len(sys.argv) > 1 else "") or os.environ.get("FECHA_INICIO", "")
+    if not crudo:
+        return INICIO_POR_DEFECTO
+    try:
+        d = date.fromisoformat(crudo.strip())
+    except ValueError:
+        raise SystemExit(f"fecha no valida: {crudo!r} — usa el formato AAAA-MM-DD")
+    if d.weekday() != 0:
+        siguiente = d + timedelta(days=(7 - d.weekday()) % 7)
+        raise SystemExit(
+            f"{d.isoformat()} es {DIAS_ES[d.weekday()]}, y la serie tiene que empezar en LUNES.\n"
+            f"El lunes siguiente es {siguiente.isoformat()}."
+        )
+    return d
+
+
+INICIO = None  # se fija en main()
 # Hora por dia de semana (Europe/Madrid). Publico de deportes de contacto:
 # L-V 19:30 (ventana de entreno de tarde), S-D 11:30 (post open mat).
 # Cuando la cuenta pase de 100 seguidores, medir_audiencia.py da las horas reales.
@@ -108,6 +133,7 @@ def validar(posts):
 
 
 if __name__ == "__main__":
+    INICIO = leer_inicio()
     posts = parsear()
     errores = validar(posts)
     DESTINO.write_text(json.dumps(posts, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
